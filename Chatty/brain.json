@@ -1,0 +1,20 @@
+{
+  "questions": [
+    {
+      "question": "hello",
+      "answer": "i am fine"
+    },
+    {
+      "question": "how are you doing",
+      "answer": "i am doing well"
+    },
+    {
+      "question": "what is 1 + 1",
+      "answer": "2"
+    },
+    {
+      "question": "what is the capital city of kenya",
+      "answer": "nairobi"
+    }
+  ]
+}

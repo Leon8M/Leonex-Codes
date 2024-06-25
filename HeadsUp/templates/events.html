@@ -1,0 +1,78 @@
+<!-- templates/events.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .tab {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Events</h2>
+        <h1 class="currentdate"></h1>
+        <div class="tab-content">
+            {% if events %}
+                {% set days = {} %}
+                {% for day, event in events %}
+                    {% set day_events = days.get(day, []) %}
+                    {% set _ = day_events.append(event) %}
+                    {% set _ = days.update({day: day_events}) %}
+                {% endfor %}
+                
+                {% for day, events_list in days.items() %}
+                    <button class="tablinks" onclick="openTab(event, '{{ day }}')">{{ day }}</button>
+                {% endfor %}
+                
+                {% for day, events_list in days.items() %}
+                    <div id="{{ day }}" class="tab">
+                        <ul>
+                            {% for event in events_list %}
+                                <li>{{ event }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No events found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function openTab(evt, day) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(day).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        document.getElementsByClassName("tablinks")[0].click();
+
+        function updateDate() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // Add leading zero for single-digit month
+            const day = String(now.getDate()).padStart(2, '0'); // Add leading zero for single-digit day
+
+            const dateString = `${year}-${month}-${day}`; // Format date string (YYYY-MM-DD)
+
+            document.querySelector('h1.currentdate').textContent = dateString; // Update h1 content with formatted date
+        }
+
+        updateDate(); // Call the function once on page load
+    </script>
+</body>
+</html>
